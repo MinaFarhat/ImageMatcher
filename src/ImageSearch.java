@@ -8,13 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 /**
- *  GO TO LINE 150 AND YOU WILL FIND THE ROOT AND ALL YOU WANT TO KNOW . .
+ * GO TO LINE 150 AND YOU WILL FIND THE ROOT AND ALL YOU WANT TO KNOW . .
  */
 public class ImageSearch extends JFrame implements ActionListener {
+
     private static final long serialVersionUID = 1L;
     private static final int MAX_IMAGE_SIZE = 200;
     private static final int MAX_IMAGE_COUNT = 30;
@@ -70,11 +71,11 @@ public class ImageSearch extends JFrame implements ActionListener {
         imageField = new JTextField();
         imageField.setPreferredSize(new Dimension(500, 25));
         imageButton = new JButton("Browse");
-        imageButton.addActionListener(this);
+        imageButton.addActionListener(ImageSearch.this);
         resizeButton = new JButton("Resize");
-        resizeButton.addActionListener(this);
+        resizeButton.addActionListener(ImageSearch.this);
         cropButton = new JButton("Crop");
-        cropButton.addActionListener(this);
+        cropButton.addActionListener(ImageSearch.this);
 
         // Add the image components to the input panel
         inputPanel.add(resizeButton);
@@ -86,7 +87,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         // Create components for selecting folder paths
         JLabel folderLabel = new JLabel("Folders:");
         folderButton = new JButton("Browse");
-        folderButton.addActionListener(this);
+        folderButton.addActionListener(ImageSearch.this);
 
         // Add the folder components to the input panel
         inputPanel.add(Box.createHorizontalStrut(20));
@@ -108,11 +109,11 @@ public class ImageSearch extends JFrame implements ActionListener {
         sizedRadiaButton = new JRadioButton("Size");
         saveFileChooser = new JFileChooser();
         searchButton = new JButton("Search");
-        similarityRadioButton.addActionListener(this);
-        colorRadioButton.addActionListener(this);
-        sizedRadiaButton.addActionListener(this);
-        dateRadioButton.addActionListener(this);
-        searchButton.addActionListener(this);
+        similarityRadioButton.addActionListener(ImageSearch.this);
+        colorRadioButton.addActionListener(ImageSearch.this);
+        sizedRadiaButton.addActionListener(ImageSearch.this);
+        dateRadioButton.addActionListener(ImageSearch.this);
+        searchButton.addActionListener(ImageSearch.this);
 
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(resizeButton);
@@ -120,9 +121,6 @@ public class ImageSearch extends JFrame implements ActionListener {
         buttonGroup.add(colorRadioButton);
         buttonGroup.add(sizedRadiaButton);
         buttonGroup.add(dateRadioButton);
-
-
-
 
         optionsPanel.add(Box.createHorizontalStrut(5));
 
@@ -148,80 +146,68 @@ public class ImageSearch extends JFrame implements ActionListener {
     }
 
     /**
-     * HERE IS THE ROOT
-     *  من هنا فينا نوصل لأي تابع بدنا ياه
-     *  يلي عم يصير هو التالي :
-     *  actionPerformed(ActionEvent e)
-     *  يعني شو رح يصير وقت نكبس الزر
+     * HERE IS THE ROOT من هنا فينا نوصل لأي تابع بدنا ياه يلي عم يصير هو التالي
+     * : actionPerformed(ActionEvent e) يعني شو رح يصير وقت نكبس الزر
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         /**
-         *هنا بمعنى.. ماذا سيحصل عندما اضغط على زر ال Image Button  ؟
-         * رح نستدعي تابع الImageSelect();
-         * يلي هو شغلته اختيار الصورة
+         * هنا بمعنى.. ماذا سيحصل عندما اضغط على زر ال Image Button ؟ رح نستدعي
+         * تابع الImageSelect(); يلي هو شغلته اختيار الصورة
          */
         if (e.getSource() == imageButton) {
             ImageSelect();
-        }
-        /**
-         *هنا بمعنى.. ماذا سيحصل عندما اضغط على زر ال folderButton  ؟
-         * رح نستدعي تابع الFolderSelect()
-         * يلي هو شغلته اختيار المجلد
+        } /**
+         * هنا بمعنى.. ماذا سيحصل عندما اضغط على زر ال folderButton ؟ رح نستدعي
+         * تابع الFolderSelect() يلي هو شغلته اختيار المجلد
          *
-         * وهكذا باقي حالات ال else if
-         * بحسب اسم الزر المحدد نستدعي التابع المحدد
+         * وهكذا باقي حالات ال else if بحسب اسم الزر المحدد نستدعي التابع المحدد
          */
         else if (e.getSource() == folderButton) {
-            choosedFolder=true;
+            choosedFolder = true;
             FolderSelect();
         } else if (e.getSource() == similarityRadioButton) {
-            selectedOption=1;
+            selectedOption = 1;
 
-        }else if (e.getSource() == sizedRadiaButton) {
-            selectedOption=3;
+        } else if (e.getSource() == sizedRadiaButton) {
+            selectedOption = 3;
 
         } else if (e.getSource() == dateRadioButton) {
-            selectedOption=4;
+            selectedOption = 4;
 
-        }
-         else if (e.getSource() == colorRadioButton) {
+        } else if (e.getSource() == colorRadioButton) {
             selectedOption = 2;
-        }else if (e.getSource() == cropButton) {
+        } else if (e.getSource() == cropButton) {
             CropImage();
             savedCropIm();
-        }else if (e.getSource() == resizeButton) {
+        } else if (e.getSource() == resizeButton) {
             ResizeAndSaveImage();
-        }
-
-
-
-        /**
-         *هنا بمعنى.. ماذا سيحصل عندما اضغط على زر ال Search؟
-         * حينها حسب ااختيارنا لطريقة البحث..تكون النتيجة
-         **/
+        } /**
+         * هنا بمعنى.. ماذا سيحصل عندما اضغط على زر ال Search؟ حينها حسب
+         * ااختيارنا لطريقة البحث..تكون النتيجة
+         *
+         */
         else if (e.getActionCommand().equals("Search")) {
-            if (!choosedFolder ){
+            if (!choosedFolder) {
                 JOptionPane.showMessageDialog(this,
                         "Please Select Folder..!",
                         "Welcome to our Image Search", JOptionPane.WARNING_MESSAGE);
 
             }
-             if(selectedOption==1){
-                 SimilarSearch();
-             }
-             else if(selectedOption==2){
-                 ColorSearch();
-             }else if (selectedOption == 3) {
-                 SizeSearch();
-             } else if (selectedOption == 4) {
-                 DateSearch();
-             }
-
-             else {SimilarSearch();}
+            switch (selectedOption) {
+                case 1 ->
+                    SimilarSearch();
+                case 2 ->
+                    ColorSearch();
+                case 3 ->
+                    SizeSearch();
+                case 4 ->
+                    DateSearch();
+                default ->
+                    SimilarSearch();
+            }
 
         }
-
-
 
     }
 
@@ -277,6 +263,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         // Perform search
         searchByDate();
     }
+
     /**
      * Handles the search by image size.
      */
@@ -291,6 +278,7 @@ public class ImageSearch extends JFrame implements ActionListener {
 
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     private void CropImage() {
         String imagePath = imageField.getText();
         if (!imagePath.isEmpty()) {
@@ -361,6 +349,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         resultsPanel.repaint();
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     private void savedCropIm() {
         BufferedImage croppedImage = getCroppedImageFromResultsPanel();
         if (croppedImage == null) {
@@ -397,10 +386,10 @@ public class ImageSearch extends JFrame implements ActionListener {
             if (resultComponents.length > 0 && resultComponents[0] instanceof JLabel) {
                 JLabel imageLabel = (JLabel) resultComponents[0];
                 Icon icon = imageLabel.getIcon();
-                if (icon instanceof ImageIcon) {
-                    Image image = ((ImageIcon) icon).getImage();
-                    if (image instanceof BufferedImage) {
-                        return (BufferedImage) image;
+                if (icon instanceof ImageIcon imageIcon) {
+                    Image image = imageIcon.getImage();
+                    if (image instanceof BufferedImage bufferedImage) {
+                        return bufferedImage;
                     }
                 }
             }
@@ -408,7 +397,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         return null;
     }
 
-
+    @SuppressWarnings("CallToPrintStackTrace")
     private void ResizeAndSaveImage() {
         String imagePath = imageField.getText();
         if (!imagePath.isEmpty()) {
@@ -461,7 +450,6 @@ public class ImageSearch extends JFrame implements ActionListener {
         }
     }
 
-
     // Helper method to resize an image to the specified width and height
     private BufferedImage resizeImage(BufferedImage image, int width, int height) {
         BufferedImage resizedImage = new BufferedImage(width, height, image.getType());
@@ -470,6 +458,8 @@ public class ImageSearch extends JFrame implements ActionListener {
         graphics2D.dispose();
         return resizedImage;
     }
+
+    @SuppressWarnings({"unused", "CallToPrintStackTrace"})
     private void saveImage(BufferedImage image) {
         // Perform image saving logic here
         JFileChooser fileChooser = new JFileChooser();
@@ -512,6 +502,7 @@ public class ImageSearch extends JFrame implements ActionListener {
     /**
      * Performs the search by image Similarity.
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private void searchBySimilarity() {
         String imagePath = imageField.getText();
         if (!imagePath.isEmpty()) {
@@ -528,22 +519,28 @@ public class ImageSearch extends JFrame implements ActionListener {
                     e.printStackTrace();
 
                 }
-            }else { JOptionPane.showMessageDialog(this,
-                    "Image Is Not Exist",
-                    "Error", JOptionPane.ERROR_MESSAGE);}
-        }else{ JOptionPane.showMessageDialog(this,
-                "Image Path Is Empty",
-                "Error", JOptionPane.ERROR_MESSAGE);}
-        if (folderPaths.isEmpty()|| folderPaths==null ){
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Image Is Not Exist",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Image Path Is Empty",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (folderPaths.isEmpty() || folderPaths == null) {
             JOptionPane.showMessageDialog(this,
                     "Please Select Folder..!",
                     "Welcome to our Image Search", JOptionPane.WARNING_MESSAGE);
 
         }
     }
+
     /**
      * Performs the search by Color.
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private void searchByColor() {
         String imagePath = imageField.getText();
         if (!imagePath.isEmpty()) {
@@ -560,22 +557,28 @@ public class ImageSearch extends JFrame implements ActionListener {
                     e.printStackTrace();
 
                 }
-            }else { JOptionPane.showMessageDialog(this,
-                    "Image Is Not Exist",
-                    "Error", JOptionPane.ERROR_MESSAGE);}
-        }else{ JOptionPane.showMessageDialog(this,
-                "Image Path Is Empty",
-                "Error", JOptionPane.ERROR_MESSAGE);}
-        if (folderPaths.isEmpty()){
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Image Is Not Exist",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Image Path Is Empty",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (folderPaths.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Please Select Folder..!",
                     "Welcome to our Image Search", JOptionPane.WARNING_MESSAGE);
 
         }
     }
+
     /**
      * Performs the search by Date Modification.
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private void searchByDate() {
         String imagePath = imageField.getText();
         if (!imagePath.isEmpty()) {
@@ -607,9 +610,11 @@ public class ImageSearch extends JFrame implements ActionListener {
                     "Welcome to our Image Search", JOptionPane.WARNING_MESSAGE);
         }
     }
+
     /**
      * Performs the search by image size.
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private void SearchByImSize() {
         String imagePath = imageField.getText();
         if (!imagePath.isEmpty()) {
@@ -642,21 +647,21 @@ public class ImageSearch extends JFrame implements ActionListener {
                     "Welcome to our Image Search", JOptionPane.WARNING_MESSAGE);
         }
     }
+
     /**
      * Finds the matching images by Similar Images.
      *
      * @param image the query image
      * @return a list of matching image paths
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private List<String> FindSimilarIm(BufferedImage image) {
         // Perform similarity search logic here
-
-        ;
         // Initialize data structures for storing search results
-        Map<String, Double> distances = new HashMap<>();
         imagePaths = new ArrayList<>();
 
-        List<Double> similarityRatios = new ArrayList<>();
+        List<Double> similarityRatios;
+        similarityRatios = new ArrayList<>();
         QuantizeImage(image);  // Reduce color depth of the image
 
         double maxSimilarity = 0;  // Variable to store the maximum similarity
@@ -683,7 +688,7 @@ public class ImageSearch extends JFrame implements ActionListener {
                 }
 
                 // Read each image file from the folder and store it in a BufferedImage object
-                BufferedImage otherImage = null;
+                BufferedImage otherImage;
                 try {
                     otherImage = ImageIO.read(file);
                 } catch (IOException ex) {
@@ -697,7 +702,6 @@ public class ImageSearch extends JFrame implements ActionListener {
                 double similarity = CalculateSimilar(image, otherImage);
                 if (similarity >= 60) {
                     // Add the image to the results if the similarity is above a threshold (90%)
-                    distances.put(filePath, similarity);
                     imagePaths.add(filePath);
                     similarityRatios.add(similarity);
 
@@ -712,7 +716,6 @@ public class ImageSearch extends JFrame implements ActionListener {
 
         // Add the original image with 100% similarity to the results
         if (!maxSimilarityPath.isEmpty()) {
-            distances.put(maxSimilarityPath, 1.0);
             imagePaths.add(maxSimilarityPath);
             similarityRatios.add(100.0);
         }
@@ -720,7 +723,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         // Determine the number of images to display in the results panel
         int count = Math.min(imagePaths.size(), MAX_IMAGE_COUNT);
 
-        if (folderPaths.isEmpty()|| folderPaths==null ){
+        if (folderPaths.isEmpty() || folderPaths == null) {
             JOptionPane.showMessageDialog(this,
                     "Please Select Folder..!",
                     "Welcome to our Image Search", JOptionPane.WARNING_MESSAGE);
@@ -732,7 +735,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         // Iterate through the selected images and display them in the results panel
         for (int i = 0; i < count; i++) {
             String imagePath2 = imagePaths.get(i);
-            BufferedImage resultImage = null;
+            BufferedImage resultImage;
             try {
                 resultImage = ImageIO.read(new File(imagePath2));
             } catch (IOException ex) {
@@ -750,8 +753,6 @@ public class ImageSearch extends JFrame implements ActionListener {
                 resultImage = resizeImage(resultImage, width, height);
             }
 
-
-
             // Create labels for the image, distance, and path, and add them to a result panel
             JLabel imageLabel = new JLabel();
             imageLabel.setIcon(new javax.swing.ImageIcon(resultImage));
@@ -767,7 +768,6 @@ public class ImageSearch extends JFrame implements ActionListener {
         resultsPanel.revalidate();
         resultsPanel.repaint();
 
-
         // ...
         return new ArrayList<>();
     }
@@ -778,9 +778,10 @@ public class ImageSearch extends JFrame implements ActionListener {
      * @param image the query image
      * @return a list of matching image paths
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     public List<String> FindcolorMatchingImage(BufferedImage image) {
         List<String> similarImages = new ArrayList<>();
-         // Open a color chooser dialog to select a color
+        // Open a color chooser dialog to select a color
         Color color = JColorChooser.showDialog(null, "Select a color", Color.WHITE);
         if (color == null) {
             return similarImages;
@@ -812,7 +813,7 @@ public class ImageSearch extends JFrame implements ActionListener {
                 }
 
                 try {
-                     image = ImageIO.read(file);
+                    image = ImageIO.read(file);
 
                     int width = image.getWidth();
                     int height = image.getHeight();
@@ -831,9 +832,9 @@ public class ImageSearch extends JFrame implements ActionListener {
 
                         // Calculate the Euclidean distance between the query color and the current pixel color
                         double distance = Math.sqrt(
-                                Math.pow(queryRed - red, 2) +
-                                        Math.pow(queryGreen - green, 2) +
-                                        Math.pow(queryBlue - blue, 2)
+                                Math.pow(queryRed - red, 2)
+                                + Math.pow(queryGreen - green, 2)
+                                + Math.pow(queryBlue - blue, 2)
                         );
 
                         // Set a threshold value for color similarity
@@ -851,22 +852,18 @@ public class ImageSearch extends JFrame implements ActionListener {
                 }
             }
 
-
         }
-
-
-
-
 
         return similarImages;
     }
+
     /**
      * Finds the matching images by Date Modification.
      *
      * @param image the query image
      * @return a list of matching image paths
      */
-    private List<String> FindDataMatchingImages(BufferedImage image) {
+    private List<String> FindDataMatchingImages(@SuppressWarnings("unused") BufferedImage image) {
         List<String> matchingImages = new ArrayList<>();
         long queryLastModified = new File(imageField.getText()).lastModified();
 
@@ -895,12 +892,14 @@ public class ImageSearch extends JFrame implements ActionListener {
 
         return matchingImages;
     }
+
     /**
      * Finds the matching images by image size.
      *
      * @param image the query image
      * @return a list of matching image paths
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private List<String> FindSizeMatchingImages(BufferedImage image) {
         List<String> matchingImages = new ArrayList<>();
         int queryWidth = image.getWidth();
@@ -945,7 +944,6 @@ public class ImageSearch extends JFrame implements ActionListener {
         return matchingImages;
     }
 
-
     // Helper method to display the matching images in the results panel
     private void DisplayResult(List<String> imagePaths) {
         for (String imagePath : imagePaths) {
@@ -954,12 +952,12 @@ public class ImageSearch extends JFrame implements ActionListener {
             Image scaledImage = imageIcon.getImage().getScaledInstance(MAX_IMAGE_SIZE, MAX_IMAGE_SIZE, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(scaledImage));
             resultsPanel.add(imageLabel);
-        }  if (imagePaths.size()<1){
+        }
+        if (imagePaths.size() < 1) {
             JOptionPane.showMessageDialog(this,
                     "No matching images found.",
                     "No Images Matched",
                     JOptionPane.WARNING_MESSAGE);
-
 
         }
         resultsPanel.revalidate();
@@ -968,7 +966,9 @@ public class ImageSearch extends JFrame implements ActionListener {
 
     // For the similary :
     /**
-     * Reduce the color depth of the image by rounding the RGB values to the nearest multiple of COLOR_DEPTH.
+     * Reduce the color depth of the image by rounding the RGB values to the
+     * nearest multiple of COLOR_DEPTH.
+     *
      * @param image The image to quantize.
      */
     private void QuantizeImage(BufferedImage image) {
@@ -991,7 +991,9 @@ public class ImageSearch extends JFrame implements ActionListener {
     }
 
     /**
-     * Calculate the similarity between two images using the Manhattan distance formula.
+     * Calculate the similarity between two images using the Manhattan distance
+     * formula.
+     *
      * @param image1 The first image.
      * @param image2 The second image.
      * @return The similarity ratio between the two images.
@@ -1026,15 +1028,15 @@ public class ImageSearch extends JFrame implements ActionListener {
 
     /**
      * Resize the given image to the specified width and height.
+     *
      * @param image The image to resize.
      * @param width The new width.
      * @param height The new height.
      * @return The resized image.
      */
-
-
     /**
      * Get the extension of a file.
+     *
      * @param filePath The file path.
      * @return The file extension.
      */
@@ -1046,10 +1048,7 @@ public class ImageSearch extends JFrame implements ActionListener {
         return "";
     }
 
-
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new ImageSearch());
     }
 }
-
